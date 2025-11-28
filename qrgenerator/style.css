@@ -1,42 +1,77 @@
-body{
+/* 1. Global Reset: Ensures padding doesn't increase element width */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif; /* Optional: Makes it look a bit cleaner */
+}
+
+body {
     background-color: rgb(44, 32, 32);
-    padding: 20% 35% 25% 30%;
+    /* 2. Flexbox Centering: This replaces the huge padding */
+    display: flex;
+    justify-content: center; /* Centers horizontally */
+    align-items: center;     /* Centers vertically */
+    min-height: 100vh;       /* Ensures body takes up full screen height */
 }
-.content{
+
+.content {
     background-color: aliceblue;
-    padding: 15px;
+    padding: 30px; /* Increased internal breathing room */
     border-radius: 20px;
+    
+    /* 3. Responsive Width Control */
+    width: 90%;          /* Takes up 90% of screen on mobile */
+    max-width: 400px;    /* Stops growing after 400px on desktop */
+    
+    /* Center inner items */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5); /* Optional: Adds depth */
 }
-.content input{
-    height: 40px;
-    width:80%;
+
+.content input {
+    height: 45px; /* Slightly larger for touch targets */
+    width: 100%;  /* Takes full width of the container (minus padding) */
     border: 1px solid rgb(169, 169, 247);
     background-color: antiquewhite;
     border-radius: 10px;
-    padding-left: 10px;
+    padding-left: 15px;
     margin-top: 15px;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
+    font-size: 16px; /* Prevents zooming on iPhone when clicked */
+    outline: none;
 }
-.content button{
+
+.content input:focus {
+    border-color: rgb(116, 4, 245); /* Visual feedback when typing */
+}
+
+.content button {
     height: 50px;
-    width: 80%;
+    width: 100%; /* Matches input width */
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 15px;
+    font-size: 16px;
     font-weight: bolder;
     color: aliceblue;
     background-color: rgb(116, 4, 245);
-    
+    border: none; /* Removes default gray border */
     border-radius: 20px;
     cursor: pointer;
-    margin-bottom: 20px;
-}
-.content button:hover{
-    background-color: rgb(156, 88, 233);
-    transform: scale(1.01) ;
-}
-.content img{
-    
+    transition: all 0.3s ease; /* Smooth hover effect */
 }
 
+.content button:hover {
+    background-color: rgb(156, 88, 233);
+    transform: scale(1.02);
+}
+
+.content img {
+    max-width: 100%; /* Prevents image from overflowing the card */
+    height: auto;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
