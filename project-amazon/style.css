@@ -1,0 +1,678 @@
+* {
+    margin: 0;
+    font-family: "Amazon Ember", Arial, sans-serif;
+    /* Updated font stack */
+    border: border-box;
+}
+
+body {
+    background-color: #e3e6e6;
+    /* Light gray background for the whole page */
+}
+
+.navbar {
+    height: 60px;
+    background-color: #131921;
+    /* Darker Amazon blue */
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* Changed from space-evenly */
+    padding: 0 10px;
+    /* Added padding */
+}
+
+.nav-logo {
+    height: 50px;
+    width: 110px;
+    /* Slightly wider */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo {
+    background-image: url('assets/amazon_logo.png');
+    background-size: contain;
+    /* Changed to contain */
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 35px;
+    /* Adjusted height */
+    width: 100%;
+    margin-top: 5px;
+}
+
+.border {
+    border: 1px solid transparent;
+    border-radius: 2px;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.border:hover {
+    border: 1px solid white;
+}
+
+/** Box 2 **/
+.add-first {
+    color: #cccccc;
+    font-size: 0.75rem;
+    /* Adjusted font size */
+    margin-left: 15px;
+}
+
+.add-second {
+    font-size: 0.9rem;
+    /* Adjusted font size */
+    margin-left: 3px;
+    font-weight: 700;
+}
+
+.add-icon {
+    display: flex;
+    align-items: center;
+}
+
+/** Box 3 **/
+.nav-search {
+    display: flex;
+    justify-content: space-evenly;
+    flex-grow: 1;
+    /* Allow search bar to grow */
+    max-width: 800px;
+    /* Max width */
+    margin: 0 20px;
+    /* Margin for spacing */
+    height: 40px;
+    border-radius: 4px;
+    overflow: hidden;
+    /* Ensure children don't overflow corners */
+}
+
+.search-select {
+    background-color: #f3f3f3;
+    width: 50px;
+    text-align: center;
+    border: none;
+    border-right: 1px solid #cdcdcd;
+    /* Separator */
+    font-size: 0.8rem;
+    color: #555;
+    cursor: pointer;
+}
+
+.search-select:focus {
+    outline: none;
+    background-color: #dadada;
+}
+
+.search-input {
+    width: 100%;
+    font-size: 1rem;
+    border: none;
+    padding-left: 10px;
+}
+
+.search-input:focus {
+    outline: none;
+}
+
+.search-icon {
+    width: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    background-color: #febd69;
+    /* Amazon yellow */
+    color: #131921;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.search-icon:hover {
+    background-color: #f3a847;
+    /* Darker yellow on hover */
+}
+
+.nav-search:focus-within {
+    /* Highlight whole search bar on focus */
+    outline: 3px solid #f3a847;
+    /* Focus ring color */
+    border-radius: 4px;
+}
+
+/** Box 4 **/
+span {
+    font-size: 0.75rem;
+}
+
+.nav-second {
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+/** Box 6 **/
+.nav-cart i {
+    font-size: 30px;
+}
+
+.nav-cart {
+    font-size: 0.9rem;
+    font-weight: 700;
+    display: flex;
+    align-items: flex-end;
+    /* Align text with icon bottom */
+}
+
+/** Panel **/
+.panel {
+    height: 40px;
+    background-color: #222f3d;
+    display: flex;
+    color: white;
+    align-items: center;
+    justify-content: flex-start;
+    /* Changed to flex-start */
+    padding-left: 20px;
+    /* Added padding */
+}
+
+.panel-all {
+    display: flex;
+    align-items: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    padding: 5px 10px;
+    border: 1px solid transparent;
+    border-radius: 2px;
+}
+
+.panel-all:hover {
+    border: 1px solid white;
+}
+
+.panel-all i {
+    margin-right: 5px;
+    font-size: 1.1rem;
+}
+
+.panel-ops {
+    display: flex;
+    list-style: none;
+    margin-left: 10px;
+}
+
+.panel-ops p {
+    display: inline;
+    margin-left: 15px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    padding: 5px 8px;
+    border: 1px solid transparent;
+    border-radius: 2px;
+}
+
+.panel-ops p:hover {
+    border: 1px solid white;
+}
+
+.panel-deals {
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-left: auto;
+    /* Push to the right */
+    margin-right: 20px;
+    cursor: pointer;
+    padding: 5px 10px;
+    border: 1px solid transparent;
+    border-radius: 2px;
+}
+
+.panel-deals:hover {
+    border: 1px solid white;
+}
+
+/** Hero Section **/
+.hero-section {
+    background-image: url('assets/hero_image.jpg');
+    background-size: cover;
+    background-position: center;
+    /* Center the image */
+    height: 350px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    position: relative;
+    /* For absolute positioning of gradient */
+    z-index: 1;
+}
+
+/* Gradient overlay */
+.hero-section::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 200px;
+    /* Height of the gradient */
+    background: linear-gradient(to bottom, transparent, #e2e7e6);
+    /* Fade to background color */
+    z-index: -1;
+    /* Behind the content but above the image background if handled differently, but here it's on top of image if z-index is higher. Wait. */
+    /* Actually, if I put it on .hero-section::before, it will be on top of the background image but behind the content if content has higher z-index. */
+}
+
+.hero-msg {
+    background-color: #f5f6f6;
+    color: black;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    width: 95%;
+    /* Wider message box */
+    margin-bottom: 25px;
+    border-radius: 4px;
+    /* Rounded corners */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    /* Subtle shadow */
+    position: relative;
+    /* To sit above gradient */
+    z-index: 2;
+}
+
+.hero-msg a {
+    color: #007185;
+    text-decoration: none;
+}
+
+.hero-msg a:hover {
+    text-decoration: underline;
+    color: #c7511f;
+}
+
+/** Shop Section **/
+.shop-section {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    /* Changed to space-between */
+    background-color: #e2e7e6;
+    padding: 20px;
+    /* Added padding around the grid */
+}
+
+.box {
+    /* height: 400px; Removed fixed height to allow content to dictate */
+    width: 23%;
+    background-color: white;
+    padding: 20px 20px 15px;
+    /* Consistent padding */
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    z-index: 2;
+    transition: transform 0.2s, box-shadow 0.2s;
+    /* Smooth transition */
+}
+
+.box:hover {
+    transform: translateY(-2px);
+    /* Subtle lift */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    /* Drop shadow */
+}
+
+.box-img {
+    height: 300px;
+    background-size: cover;
+    background-position: center;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    cursor: pointer;
+}
+
+.box-content {
+    margin: 0;
+    /* Reset margin as padding is on parent */
+}
+
+.box-content h2 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    /* Space below title */
+}
+
+.box-content p {
+    color: #007185;
+    font-size: 0.85rem;
+    cursor: pointer;
+    font-weight: 500;
+    /* Slightly bolder link */
+}
+
+.box-content p:hover {
+    color: #c7511f;
+    text-decoration: underline;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1000px) {
+    .box {
+        width: 48%;
+        /* 2 columns on smaller screens */
+    }
+}
+
+@media (max-width: 600px) {
+    .box {
+        width: 100%;
+        /* 1 column on mobile */
+    }
+
+    .nav-search {
+        display: none;
+        /* Hide search on very small screens for now or adjust */
+    }
+}
+
+/** Footer **/
+footer {
+    margin-top: 15px;
+}
+
+.foot-panel1 {
+    background-color: #37475a;
+    color: white;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.85rem;
+    cursor: pointer;
+    font-weight: 700;
+    transition: background-color 0.2s;
+}
+
+.foot-panel1:hover {
+    background-color: #485769;
+}
+
+/* Back to top link behavior */
+.foot-panel1 a {
+    color: white;
+    text-decoration: none;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.foot-panel2 {
+    background-color: #232f3e;
+    /* Updated to Amazon dark blue */
+    color: white;
+    padding: 50px 0;
+    /* Increased padding */
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+}
+
+ul {
+    margin-top: 0;
+    /* Reset margin */
+    list-style: none;
+    padding: 0 20px;
+}
+
+ul p {
+    font-weight: 700;
+    margin-bottom: 10px;
+    font-size: 1rem;
+    color: white;
+    /* Ensure heading is white */
+}
+
+ul a {
+    display: block;
+    font-size: 0.85rem;
+    margin-top: 10px;
+    color: #dddddd;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+ul a:hover {
+    text-decoration: underline;
+}
+
+.foot-panel3 {
+    background-color: #232f3e;
+    /* Updated color */
+    color: white;
+    border-top: 1px solid #3a4553;
+    height: 100px;
+    /* Increased height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.foot-panel3 .logo {
+    background-image: url('assets/amazon_logo.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 35px;
+    width: 100px;
+    cursor: pointer;
+}
+
+.foot-panel4 {
+    background-color: #131a22;
+    color: white;
+    padding: 30px 0;
+    font-size: 0.75rem;
+    text-align: center;
+}
+
+.pages {
+    margin-bottom: 5px;
+}
+
+.pages a {
+    margin: 0 10px;
+    color: #dddddd;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.pages a:hover {
+    text-decoration: underline;
+}
+
+.copyright {
+    padding-top: 5px;
+    color: #dddddd;
+}
+
+/* ... (previous styles) ... */
+
+/* Sidebar Styles */
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 99;
+    display: none;
+    /* Hidden by default */
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.sidebar-overlay.active {
+    display: block;
+    opacity: 1;
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 365px;
+    height: 100%;
+    background-color: white;
+    z-index: 100;
+    transform: translateX(-100%);
+    /* Hidden off-screen */
+    transition: transform 0.3s ease;
+    overflow-y: auto;
+}
+
+.sidebar.active {
+    transform: translateX(0);
+}
+
+.sidebar-head {
+    background-color: #232f3e;
+    color: white;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    padding-left: 30px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    position: relative;
+}
+
+.sidebar-head i {
+    margin-right: 10px;
+    font-size: 1.5rem;
+}
+
+#sidebar-close {
+    position: absolute;
+    right: -40px;
+    /* Outside the sidebar */
+    top: 10px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+}
+
+.sidebar-content {
+    padding: 20px 0;
+}
+
+.sidebar-content h3 {
+    padding: 10px 30px;
+    font-size: 1.1rem;
+    color: #111;
+}
+
+.sidebar-content ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar-content ul li {
+    padding: 12px 30px;
+    font-size: 0.9rem;
+    color: #111;
+    cursor: pointer;
+}
+
+.sidebar-content ul li:hover {
+    background-color: #eaeded;
+}
+
+.sidebar-divider {
+    height: 1px;
+    background-color: #d5dbdb;
+    margin: 10px 0;
+}
+
+/* Hero Carousel Buttons */
+.hero-section {
+    /* ... existing styles ... */
+    position: relative;
+    /* Ensure buttons are positioned relative to hero */
+    transition: background-image 0.5s ease-in-out;
+    /* Smooth transition for background */
+}
+
+.hero-btn {
+    position: absolute;
+    top: 30%;
+    /* Center vertically relative to the image part visible */
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    font-size: 3rem;
+    color: white;
+    /* Make sure it's visible */
+    cursor: pointer;
+    padding: 20px 10px;
+    z-index: 10;
+    opacity: 0.5;
+    transition: opacity 0.2s, background-color 0.2s;
+}
+
+.hero-btn:hover {
+    opacity: 1;
+    background-color: rgba(0, 0, 0, 0.1);
+    /* Subtle background on hover */
+}
+
+.prev-btn {
+    left: 0;
+}
+
+.next-btn {
+    right: 0;
+}
+
+.hero-btn:focus {
+    outline: 2px solid #febd69;
+    /* Accessibility focus */
+}
+
+/* Floating Back to Top Button */
+#back-to-top-btn {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    bottom: 20px;
+    right: 30px;
+    z-index: 99;
+    font-size: 1.2rem;
+    border: none;
+    outline: none;
+    background-color: #37475a;
+    color: white;
+    cursor: pointer;
+    padding: 15px;
+    border-radius: 50%;
+    /* Circular */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s;
+}
+
+#back-to-top-btn:hover {
+    background-color: #232f3e;
+}

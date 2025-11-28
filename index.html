@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>30 Days of JS Projects Portfolio - Dynamic</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom styles for professional aesthetic */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0d1117; /* GitHub Dark Background */
+            color: #c9d1d9; /* GitHub Text Color */
+        }
+        .project-card {
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            border: 1px solid #30363d; /* Subtle border */
+        }
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.2);
+            border-color: #58a6ff; /* Highlight on hover */
+        }
+    </style>
+</head>
+<body class="min-h-screen p-4 sm:p-8">
+
+    <div class="max-w-6xl mx-auto">
+        <!-- Header Section -->
+        <header class="text-center py-12 border-b border-gray-700 mb-12">
+            <h1 class="text-5xl font-extrabold text-white">
+                30 Days of JavaScript Challenge
+            </h1>
+            <p class="mt-4 text-xl text-gray-400 max-w-2xl mx-auto">
+                A collection of self-contained projects, dynamically loaded from the GitHub repository structure!
+            </p>
+        </header>
+
+        <!-- Projects Grid Container -->
+        <div id="projects-container" class="grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+            <p id="loading-message" class="col-span-full text-center text-gray-400">Loading projects from GitHub API...</p>
+        </div>
+
+        <!-- Footer -->
+        <footer class="text-center mt-16 py-6 border-t border-gray-700">
+            <p class="text-sm text-gray-500">
+                Generated from the GitHub repository | <a href="https://github.com/Pro-Tik/30d-30-Js-Projects" target="_blank" class="text-blue-400 hover:text-blue-300 transition duration-150">View Repository</a>
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // --- Configuration: Repository Details (UPDATED) ---
+        // These values now match the user's repository URL: https://github.com/Pro-Tik/30d-30-Js-Projects
+        const REPO_OWNER = 'Pro-Tik';
+        const REPO_NAME = '30d-30-Js-Projects';
+        const API_URL = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/`;
+        // ------------------------------------------
+
+        const container = document.getElementById('projects-container');
+        const loadingMessage = document.getElementById('loading-message');
+
+        /**
+         * Renders a single project card dynamically.
+         * @param {object} item - The GitHub API content object for the folder.
+         */
+        function renderProjectCard(item) {
+            // Only render items that are directories and not hidden files (e.g., .github)
+            // It also excludes the 'images' folder if it exists, assuming it's an asset folder.
+            if (item.type !== 'dir' || item.name.startsWith('.') || item.name === 'images') return;
+
+            const cardLink = document.createElement('a');
+            
+            // FIX: Construct the relative URL using the folder name, converted to lowercase 
+            // to maximize compatibility with the GitHub Pages serving environment.
+            const projectFolderName = item.name.toLowerCase();
+            cardLink.href = `./${projectFolderName}/index.html`; 
+            cardLink.target = "_blank"; 
+            
+            const card = document.createElement('div');
+            card.className = 'project-card bg-gray-800 p-6 rounded-xl cursor-pointer hover:bg-gray-700 flex flex-col justify-between h-full';
+
+            // Use the folder name as the title, converting 'kebab-case' to 'Title Case'
+            const title = item.name.replace(/-/g, ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+            const description = item.name; // Placeholder for the folder name
+            const icon = `<svg class="w-6 h-6 mr-3 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>`; // Code icon
+
+            card.innerHTML = `
+                <div class="flex items-center mb-2">
+                    ${icon}
+                    <h2 class="text-2xl font-bold text-white">${title}</h2>
+                </div>
+                <div>
+                    <p class="mt-2 text-gray-400 text-sm italic">Project Folder: <span class="text-blue-300">${description}</span></p>
+                </div>
+                <div class="mt-4 text-right">
+                    <span class="inline-flex items-center text-sm font-medium text-blue-400 transition duration-150 hover:text-blue-300">
+                        View Demo
+                        <!-- Icon: Right Arrow -->
+                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                    </span>
+                </div>
+            `;
+            
+            cardLink.appendChild(card);
+            container.appendChild(cardLink);
+        }
+
+        /**
+         * Fetches the repository contents and renders the project list.
+         * Implements exponential backoff for robust API calls.
+         */
+        async function fetchWithRetry(url, maxRetries = 5) {
+            let attempt = 0;
+            while (attempt < maxRetries) {
+                try {
+                    const response = await fetch(url);
+                    if (response.status === 403) {
+                         // Likely rate limit exceeded
+                         throw new Error("GitHub API Rate Limit Exceeded. Please wait an hour or authenticate.");
+                    }
+                    if (!response.ok) {
+                        throw new Error(`GitHub API returned status ${response.status}.`);
+                    }
+                    return response;
+                } catch (error) {
+                    attempt++;
+                    if (attempt >= maxRetries) throw error;
+                    const delay = Math.pow(2, attempt) * 1000; // Exponential backoff (2s, 4s, 8s, ...)
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                }
+            }
+        }
+
+
+        async function initializePortfolio() {
+            try {
+                const response = await fetchWithRetry(API_URL);
+                const contents = await response.json();
+                
+                // Clear loading message
+                loadingMessage.remove(); 
+                container.innerHTML = ''; 
+
+                // Filter for directories (project folders) and exclude common files like README.md
+                const projectFolders = contents.filter(item => 
+                    item.type === 'dir' && 
+                    !['node_modules', '.github', 'images'].includes(item.name) && 
+                    !item.name.startsWith('.')
+                );
+
+                if (projectFolders.length === 0) {
+                    container.innerHTML = '<p class="col-span-full text-center text-gray-400">No project folders found in the repository root.</p>';
+                } else {
+                    // Sort the projects alphabetically by name for a cleaner view
+                    projectFolders.sort((a, b) => a.name.localeCompare(b.name));
+                    projectFolders.forEach(renderProjectCard);
+                }
+
+            } catch (error) {
+                console.error("Error fetching repository contents:", error);
+                
+                // Re-add the loading message placeholder if it was removed
+                if (!document.getElementById('loading-message')) {
+                    const errorElement = document.createElement('p');
+                    errorElement.id = 'loading-message';
+                    container.appendChild(errorElement);
+                }
+                
+                loadingMessage.className = 'col-span-full text-center text-red-400 p-4 bg-red-900/50 rounded-lg';
+                loadingMessage.textContent = `Failed to load projects: ${error.message}. Please ensure the REPO_OWNER and REPO_NAME are correct.`;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+             console.log(`Fetching contents from: ${API_URL}`);
+             initializePortfolio();
+        });
+
+    </script>
+</body>
+</html>

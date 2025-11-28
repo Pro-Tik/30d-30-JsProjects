@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ether Marketplace</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#0f172a',
+                            light: '#1e293b',
+                            accent: '#6366f1',
+                            eth: '#627eea'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom Animation for the ETH floating effect */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .float-anim {
+            animation: float 3s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="bg-brand-dark text-white font-sans min-h-screen flex flex-col">
+
+    <!-- Navbar -->
+    <nav class="p-6 flex justify-between items-center border-b border-gray-800 bg-brand-light">
+        <div class="flex items-center gap-2 text-xl font-bold tracking-wider">
+            <i class="fa-brands fa-ethereum text-brand-eth"></i> CRYPTO<span class="text-brand-accent">MART</span>
+        </div>
+        <div class="text-sm text-gray-400">
+            <i class="fa-solid fa-wallet mr-2"></i> 0x12...89A
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow flex items-center justify-center p-4">
+        
+        <div class="max-w-md w-full bg-brand-light rounded-2xl shadow-2xl overflow-hidden border border-gray-700 relative">
+            
+            <!-- Glow Effect -->
+            <div class="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-32 bg-brand-accent blur-[80px] opacity-20 pointer-events-none"></div>
+
+            <!-- Product Image Area -->
+            <div class="h-64 bg-gradient-to-b from-gray-800 to-brand-light flex items-center justify-center p-8">
+                <!-- SVG Ether Icon -->
+                <svg class="w-32 h-32 text-brand-eth drop-shadow-lg float-anim" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M15.925 23.96L15.998 24.18L23.69 19.64L16.002 14.86L15.925 15.04V23.96ZM16.074 23.96V15.04L16.002 14.86L8.31201 19.64L15.998 24.18L16.074 23.96Z" fill="#627EEA"/>
+                    <path d="M15.925 13.894L16.002 14.072L23.69 9.53003L15.998 0L15.925 0.254V13.894ZM16.074 13.894V0.254L15.998 0L8.31201 9.53003L16.002 14.072L16.074 13.894Z" fill="#8A92B2"/>
+                    <path d="M15.998 25.43L8.31201 20.89L15.925 32V25.642L15.998 25.43ZM16.074 32L23.69 20.89L16.002 25.43L16.074 25.642V32Z" fill="#627EEA"/>
+                </svg>
+            </div>
+
+            <!-- Product Details -->
+            <div class="p-6">
+                <div class="flex justify-between items-start mb-2">
+                    <div>
+                        <h2 class="text-2xl font-bold mb-1">Golden Ether Node</h2>
+                        <p class="text-gray-400 text-sm">Exclusive Digital Collectible</p>
+                    </div>
+                    <div class="bg-brand-dark px-3 py-1 rounded-full border border-gray-700">
+                        <span class="text-xs text-gray-400">Rare</span>
+                    </div>
+                </div>
+
+                <div class="my-6 p-4 bg-brand-dark rounded-xl border border-gray-800 flex justify-between items-center">
+                    <span class="text-gray-400">Price</span>
+                    <div class="flex items-center gap-2">
+                        <i class="fa-brands fa-ethereum text-brand-eth"></i>
+                        <span class="text-xl font-bold text-white">0.001 ETH</span>
+                    </div>
+                </div>
+
+                <button id="buyBtn" class="w-full py-4 bg-brand-accent hover:bg-indigo-500 text-white font-bold rounded-xl transition-all duration-200 transform active:scale-95 shadow-lg shadow-indigo-500/20 flex justify-center items-center gap-2">
+                    <span>Purchase Now</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+
+                <!-- Status Console -->
+                <div id="statusArea" class="mt-4 p-3 bg-black/50 rounded-lg text-xs font-mono hidden">
+                    <p class="text-gray-500 mb-1">LOGS:</p>
+                    <div id="logs" class="space-y-1 break-all"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="p-4 text-center text-gray-600 text-sm">
+        &copy; 2024 EtherMart. Secure Checkout.
+    </footer>
+
+    <script>
+        // --- CONFIGURATION ---
+        // 1. Set this to TRUE to connect to your real Render backend.
+        // 2. Set this to FALSE to just test the animation/redirect UI.
+        const ENABLE_BACKEND = true; 
+        
+        // YOUR BACKEND URL HERE
+        const API_URL = 'https://crypto-payment-1.onrender.com/api/generate-payment-link';
+        // ---------------------
+
+        const buyBtn = document.getElementById('buyBtn');
+        const statusArea = document.getElementById('statusArea');
+        const logs = document.getElementById('logs');
+
+        function logMessage(msg, type = 'info') {
+            statusArea.classList.remove('hidden');
+            const div = document.createElement('div');
+            
+            if (type === 'error') div.className = 'text-red-400 font-bold';
+            else if (type === 'success') div.className = 'text-green-400 font-bold';
+            else div.className = 'text-blue-300';
+            
+            div.innerText = `> ${msg}`;
+            logs.appendChild(div);
+            logs.scrollTop = logs.scrollHeight;
+        }
+
+        async function simulateBackend() {
+            logMessage('Running in SIMULATION MODE (No real backend)...', 'info');
+            await new Promise(r => setTimeout(r, 1500));
+            return { url: 'https://example.com/checkout/session_mock_12345' };
+        }
+
+        async function callRealBackend() {
+            logMessage(`Connecting to ${API_URL}...`, 'info');
+            
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-api-key': 'c535af8e2c0e515959c13c2524dee44dcac720a6e745c65a9ac6a485b6025d1f'
+                },
+                body: JSON.stringify({ amount: 0.05 })
+            });
+
+            if (!response.ok) {
+                throw new Error(`Server returned ${response.status} ${response.statusText}`);
+            }
+            return await response.json();
+        }
+
+        buyBtn.addEventListener('click', async () => {
+            
+            // --- CRITICAL CHECK: Detect if user opened file directly ---
+            if (window.location.protocol === 'file:') {
+                statusArea.classList.remove('hidden');
+                logs.innerHTML = '';
+                logMessage('❌ CRITICAL ERROR DETECTED', 'error');
+                logMessage('You opened this file directly (file://)', 'error');
+                logMessage('Browsers block this connection for security.', 'info');
+                logMessage('👉 SOLUTION: Install "Live Server" in VS Code and use that.', 'success');
+                return;
+            }
+            // -----------------------------------------------------------
+
+            const originalContent = buyBtn.innerHTML;
+            buyBtn.disabled = true;
+            buyBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Processing...';
+            statusArea.classList.add('hidden');
+            logs.innerHTML = ''; 
+            
+            logMessage('Initiating purchase sequence...');
+
+            let paymentUrl = '';
+
+            try {
+                if (ENABLE_BACKEND) {
+                    const data = await callRealBackend();
+                    paymentUrl = data.url;
+                } else {
+                    const data = await simulateBackend();
+                    paymentUrl = data.url;
+                }
+
+                console.log(paymentUrl);
+                logMessage(`Success! Payment URL generated:`, 'success');
+                logMessage(paymentUrl, 'success');
+                
+                setTimeout(() => {
+                    buyBtn.innerHTML = '<i class="fa-solid fa-check"></i> Redirecting...';
+                    buyBtn.classList.replace('bg-brand-accent', 'bg-green-500');
+                    window.location.href = paymentUrl;
+                }, 1000);
+
+            } catch (error) {
+                console.error("Transaction failed:", error);
+                
+                logMessage(`Transaction Failed: ${error.message}`, 'error');
+                
+                // Detailed Help for Render/CORS errors
+                if (error.message.includes('Failed to fetch')) {
+                     logMessage('-----------------------------------', 'info');
+                     logMessage('POSSIBLE CAUSES:', 'info');
+                     logMessage('1. Backend is sleeping (Render spins down free tier).', 'info');
+                     logMessage('2. CORS is blocking the request.', 'info');
+                     logMessage('   (Add "app.use(cors())" to your backend)', 'info');
+                     logMessage('-----------------------------------', 'info');
+                }
+                
+                setTimeout(() => {
+                    buyBtn.disabled = false;
+                    buyBtn.innerHTML = originalContent;
+                }, 4000);
+            }
+        });
+    </script>
+</body>
+</html>
