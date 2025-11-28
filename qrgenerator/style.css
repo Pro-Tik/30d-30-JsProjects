@@ -1,0 +1,42 @@
+body{
+    background-color: rgb(44, 32, 32);
+    padding: 20% 35% 25% 30%;
+}
+.content{
+    background-color: aliceblue;
+    padding: 15px;
+    border-radius: 20px;
+}
+.content input{
+    height: 40px;
+    width:80%;
+    border: 1px solid rgb(169, 169, 247);
+    background-color: antiquewhite;
+    border-radius: 10px;
+    padding-left: 10px;
+    margin-top: 15px;
+    margin-bottom: 40px;
+}
+.content button{
+    height: 50px;
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+    font-weight: bolder;
+    color: aliceblue;
+    background-color: rgb(116, 4, 245);
+    
+    border-radius: 20px;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+.content button:hover{
+    background-color: rgb(156, 88, 233);
+    transform: scale(1.01) ;
+}
+.content img{
+    
+}
+
