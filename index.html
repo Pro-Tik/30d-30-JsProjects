@@ -47,16 +47,17 @@
         <!-- Footer -->
         <footer class="text-center mt-16 py-6 border-t border-gray-700">
             <p class="text-sm text-gray-500">
-                Generated from the GitHub repository | <a href="https://github.com/Pro-Tik/30d-30-Js-Projects" target="_blank" class="text-blue-400 hover:text-blue-300 transition duration-150">View Repository</a>
+                Generated from the GitHub repository | <a href="https://github.com/Pro-Tik/30d-30-js-Projects" target="_blank" class="text-blue-400 hover:text-blue-300 transition duration-150">View Repository</a>
             </p>
         </footer>
     </div>
 
     <script>
-        // --- Configuration: Repository Details (UPDATED) ---
-        // These values now match the user's repository URL: https://github.com/Pro-Tik/30d-30-Js-Projects
+        // --- Configuration: Repository Details (FIXED) ---
+        // Based on your live URL: https://pro-tik.github.io/30d-30-JsProjects/
+        // The repository name is '30d-30-JsProjects' (without the second hyphen).
         const REPO_OWNER = 'Pro-Tik';
-        const REPO_NAME = '30d-30-Js-Projects';
+        const REPO_NAME = '30d-30-JsProjects';
         const API_URL = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/`;
         // ------------------------------------------
 
@@ -74,10 +75,8 @@
 
             const cardLink = document.createElement('a');
             
-            // FIX: Construct the relative URL using the folder name, converted to lowercase 
-            // to maximize compatibility with the GitHub Pages serving environment.
-            const projectFolderName = item.name.toLowerCase();
-            cardLink.href = `./${projectFolderName}/index.html`; 
+            // Use exact folder name for the link to avoid case-sensitivity issues
+            cardLink.href = `./${item.name}/index.html`; 
             cardLink.target = "_blank"; 
             
             const card = document.createElement('div');
@@ -122,12 +121,16 @@
                          // Likely rate limit exceeded
                          throw new Error("GitHub API Rate Limit Exceeded. Please wait an hour or authenticate.");
                     }
+                    if (response.status === 404) {
+                        throw new Error("Repository not found (404). Check the REPO_OWNER and REPO_NAME variables in the script.");
+                    }
                     if (!response.ok) {
                         throw new Error(`GitHub API returned status ${response.status}.`);
                     }
                     return response;
                 } catch (error) {
                     attempt++;
+                    console.warn(`Attempt ${attempt} failed: ${error.message}`);
                     if (attempt >= maxRetries) throw error;
                     const delay = Math.pow(2, attempt) * 1000; // Exponential backoff (2s, 4s, 8s, ...)
                     await new Promise(resolve => setTimeout(resolve, delay));
@@ -171,7 +174,7 @@
                 }
                 
                 loadingMessage.className = 'col-span-full text-center text-red-400 p-4 bg-red-900/50 rounded-lg';
-                loadingMessage.textContent = `Failed to load projects: ${error.message}. Please ensure the REPO_OWNER and REPO_NAME are correct.`;
+                loadingMessage.textContent = `Failed to load projects. Error: ${error.message}`;
             }
         }
 
