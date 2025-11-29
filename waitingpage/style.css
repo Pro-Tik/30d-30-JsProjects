@@ -1,0 +1,92 @@
+.container{
+    width: 100vw;
+    height: 100vh;
+    background-image: url(images/background.png);
+    background-position: center;
+    background-size: cover;
+    
+}
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.logo{
+    width: 120px;
+    padding: 20px;
+    cursor: pointer;
+    margin-left: 50px;
+}
+.content{
+    margin-top: 100px;
+    padding: 100px 40px 40px 60px;
+
+}
+.content p{
+    font-size: 30px;
+    color: aliceblue;
+    font-weight: bold;
+
+}
+.content h1{
+    font-size: 80px;
+    color: azure;
+}
+span{
+    color: orangered;
+}
+
+button{
+    height: 60px;
+    width: 160px;
+    background-color: transparent;
+    border: 1px solid white;
+    color: white ;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 20px;
+}
+button:hover{
+    background-color: rgb(235, 111, 111);
+}
+
+.btnimg{
+    margin-top: 10px;
+    margin-left: 5px;
+    height: 15px;
+    width: auto;
+}
+.launching-time{
+    display: flex;
+}
+.launching-time div{
+    flex-basis: 100px;
+    margin-bottom: 20px;
+
+}
+.launching-time p{
+    font-size: 60px;
+    
+
+    
+}
+.rocketimg{
+    width: 250px; 
+    position: absolute;
+    right: 10%;
+    bottom: 0;
+    animation: rocket 4s linear infinite;
+}
+
+
+@keyframes rocket{
+    0%{
+        bottom: 0;
+        opacity: 0;
+    }
+    100%{
+        bottom: 105%;
+        opacity: 1;
+    }
+}
